@@ -13,6 +13,8 @@ import com.github.vole.mps.model.vo.RoleVO;
 import com.github.vole.mps.service.MemberRoleService;
 import com.github.vole.mps.service.MemberService;
 import com.github.vole.mps.service.RoleService;
+import com.github.vole.portal.common.util.SecurityContextUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -23,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/rest/member")
 public class RestMemberController {
@@ -37,7 +39,6 @@ public class RestMemberController {
 
     @Autowired
     private RoleService roleService;
-
 
 
     /**
@@ -86,29 +87,31 @@ public class RestMemberController {
      */
     @GetMapping("/findMemberByMembername/{membername}")
     public MemberVO findUserByUsername(@PathVariable String membername) {
+        Integer userId = SecurityContextUtil.getUserId();
+        log.error("userId:{}", userId);
         MemberVO vo = new MemberVO();
         List<RoleVO> roleVOList = new ArrayList<RoleVO>();
         QueryWrapper<Member> qw = new QueryWrapper();
-        qw.eq("membername",membername);
+        qw.eq("membername", membername);
         Member m = memberService.getOne(qw);
-        if(m!=null){
-            BeanUtils.copyProperties(m,vo);
+        if (m != null) {
+            BeanUtils.copyProperties(m, vo);
         }
         Long memberId = m.getMemberId();
         QueryWrapper<MemberRole> mRqw = new QueryWrapper();
-        mRqw.eq("member_id",memberId);
+        mRqw.eq("member_id", memberId);
         List<MemberRole> memberRoleList = memberRoleService.list(mRqw);
-        if(!CollectionUtils.isEmpty(memberRoleList)){
+        if (!CollectionUtils.isEmpty(memberRoleList)) {
             List<Integer> roleIds = new ArrayList<Integer>();
-            memberRoleList.forEach(input ->{
+            memberRoleList.forEach(input -> {
                 roleIds.add(input.getRoleId());
             });
             QueryWrapper<Role> rqw = new QueryWrapper();
-            rqw.in("role_id",roleIds);
+            rqw.in("role_id", roleIds);
             List<Role> roles = roleService.list(rqw);
-            roles.forEach(input ->{
+            roles.forEach(input -> {
                 RoleVO rvo = new RoleVO();
-                BeanUtils.copyProperties(input,rvo);
+                BeanUtils.copyProperties(input, rvo);
                 roleVOList.add(rvo);
             });
         }
@@ -123,38 +126,36 @@ public class RestMemberController {
      * @return MemberVo 对象
      */
     @GetMapping("/findMemberByMobile/{mobile}")
-    public MemberVO findMemberByMobile(@PathVariable String mobile)
-    {
+    public MemberVO findMemberByMobile(@PathVariable String mobile) {
         MemberVO vo = new MemberVO();
         List<RoleVO> roleVOList = new ArrayList<RoleVO>();
         QueryWrapper<Member> qw = new QueryWrapper();
-        qw.eq("mobile",mobile);
+        qw.eq("mobile", mobile);
         Member m = memberService.getOne(qw);
-        if(m!=null){
-            BeanUtils.copyProperties(m,vo);
+        if (m != null) {
+            BeanUtils.copyProperties(m, vo);
         }
         Long memberId = m.getMemberId();
         QueryWrapper<MemberRole> mRqw = new QueryWrapper();
-        mRqw.eq("member_id",memberId);
+        mRqw.eq("member_id", memberId);
         List<MemberRole> memberRoleList = memberRoleService.list(mRqw);
-        if(!CollectionUtils.isEmpty(memberRoleList)){
+        if (!CollectionUtils.isEmpty(memberRoleList)) {
             List<Integer> roleIds = new ArrayList<Integer>();
-            memberRoleList.forEach(input ->{
+            memberRoleList.forEach(input -> {
                 roleIds.add(input.getRoleId());
             });
             QueryWrapper<Role> rqw = new QueryWrapper();
-            rqw.in("role_id",roleIds);
+            rqw.in("role_id", roleIds);
             List<Role> roles = roleService.list(rqw);
-            roles.forEach(input ->{
+            roles.forEach(input -> {
                 RoleVO rvo = new RoleVO();
-                BeanUtils.copyProperties(input,rvo);
+                BeanUtils.copyProperties(input, rvo);
                 roleVOList.add(rvo);
             });
         }
         vo.setRoleVoList(roleVOList);
         return vo;
     }
-
 
 
 }

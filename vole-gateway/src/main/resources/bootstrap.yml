@@ -4,43 +4,30 @@ spring:
   profiles:
     active: dev
   cloud:
-    config:
-      fail-fast: true
+    consul:
+      host: ${CONSUL_HOST:192.168.1.32}
+      port: ${CONSUL_PORT:8500}
       discovery:
-        service-id: vole-config-server
-        enabled: true
-      profile: ${spring.profiles.active}
+        prefer-ip-address: true
+        healthCheckPath: /actuator/health
+        healthCheckInterval: 15s
+    nacos:
+      config:
+        server-addr: 192.168.1.32:8848
+        file-extension: yml
 
----
-spring:
-  profiles: dev
-eureka:
-  instance:
-    prefer-ip-address: true
-    lease-renewal-interval-in-seconds: 5
-    lease-expiration-duration-in-seconds: 20
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:1025/eureka/
-    registry-fetch-interval-seconds: 10
 
 #认证服务器地址
 security:
   auth:
-    server: http://localhost:7001
+    server: http://192.168.1.120:7001
 
----
-spring:
-  profiles: prd
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:1025/eureka/
-
-#认证服务器地址
-security:
-  auth:
-    server: http://localhost:7001
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 

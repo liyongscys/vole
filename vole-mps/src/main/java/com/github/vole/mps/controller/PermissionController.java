@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/mps/permission")
-public class PermissionContoller extends AbstractController<PermissionService,Permission> {
+public class PermissionController extends AbstractController<PermissionService,Permission> {
 
     @Override
     protected String getTemplatePath() {

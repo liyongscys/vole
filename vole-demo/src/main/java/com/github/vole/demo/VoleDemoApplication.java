@@ -13,7 +13,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @EnableHystrix                // 开启断路器
 @EnableHystrixDashboard
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.github.vole.demo", "com.github.vole.common.bean"})
 public class VoleDemoApplication {
 
     public static void main(String[] args) {

@@ -32,7 +32,7 @@ public class TokenArgumentResolver implements HandlerMethodArgumentResolver {
      */
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
-        return methodParameter.getParameterType().equals(MemberVO.class);
+        return methodParameter.getParameterType().equals(MemberVO.class) && methodParameter.hasMethodAnnotation(CurrentUser.class);
     }
 
     /**
