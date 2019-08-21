@@ -16,6 +16,12 @@ spring:
         server-addr: 192.168.1.32:8848
         file-extension: yml
 
+  zipkin:
+    sender:
+      type: rabbit
+
+
+
 management:
   endpoint:
     health:

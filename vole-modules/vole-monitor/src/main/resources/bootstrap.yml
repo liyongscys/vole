@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: vole-monitor
+  profiles:
+    active: dev
+  security:
+    user:
+      name: admin
+      password: admin
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.1.32:8848
+        file-extension: yml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
