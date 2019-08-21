@@ -1,0 +1,67 @@
+server:
+  port: 6002
+
+spring:
+  application:
+    name: vole-demo
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: cabletech
+    url: jdbc:mysql://127.0.0.1:3306/vole?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+  redis:
+    host: 192.168.1.32
+    port: 6379
+    timeout: 3000ms
+    database: 0
+    jedis:
+      pool:
+        max-idle: 50
+        min-idle: 5
+        max-active: 200
+        max-wait: 20ms
+    lettuce:
+      pool:
+        max-active: 200
+        max-wait: 20ms
+        max-idle: 50
+        min-idle: 5
+
+  rabbitmq:
+      host: 192.168.1.32
+      port: 5672
+      username: user01
+      password: cabletech
+
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:192.168.1.32}
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        prefer-ip-address: true
+        healthCheckPath: /actuator/health
+        healthCheckInterval: 15s
+    nacos:
+      config:
+        server-addr: 192.168.1.32:8848
+        file-extension: yml
+  sleuth:
+    sampler:
+      probability: 1.0
+      rate: 100
+  zipkin:
+    sender:
+      type: rabbit
+ignore:
+  urls:
+    - /css/*.css
+    - /js/*.js
+    - /actuator/**
+    - /hystrix/**
+    - /metrics/**
+    - /loggers/**
+  
+security:
+  token-forward: true
