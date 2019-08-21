@@ -37,10 +37,15 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- tag::dependency-eureka[] -->
+        <!--启用consul 服务发现-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+        </dependency>
+        <!--配置中心-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
         <!--监控-->
         <dependency>
